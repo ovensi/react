@@ -76,7 +76,7 @@ export default function Icon({className = '', type}: Props) {
     case 'warning':
       pathData = PATH_WARNING;
       break;
-    default:
+      default:
       console.warn(`Unsupported type "${type}" specified for Icon`);
       break;
   }

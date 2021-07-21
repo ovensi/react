@@ -252,12 +252,23 @@ type SourceProps = {|
 
 function Source({fileName, lineNumber}: SourceProps) {
   const handleCopy = () => copy(`${fileName}:${lineNumber}`);
+  const openInCode = () => {
+    window.chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+      const host = tabs[0].url.replace(/^(https?:\/\/[^\/]*).*$/, '$1')
+      const filepath = `${fileName}:${lineNumber}`;
+      const url = `${host}/__open-in-editor?file=${filepath}`
+      fetch(url)
+  });
+  }
   return (
     <div className={styles.Source}>
       <div className={styles.SourceHeaderRow}>
         <div className={styles.SourceHeader}>source</div>
         <Button onClick={handleCopy} title="Copy to clipboard">
           <ButtonIcon type="copy" />
+        </Button>
+        <Button onClick={openInCode} title="Open in VScode">
+          <ButtonIcon type="vscode" />
         </Button>
       </div>
       <div className={styles.SourceOneLiner}>
